@@ -6,7 +6,7 @@ on:
 
 jobs:
   testing:
-    runs: ubuntu-20.04
+    runs-on: ubuntu-20.04
     env:
       CI_SECRET_KEY: ${{ secrets.GIT_SECRET_KEY }}
       CI_ALLOWED_HOSTS: ${{ secrets.GIT_ALLOWED_HOSTS }}
