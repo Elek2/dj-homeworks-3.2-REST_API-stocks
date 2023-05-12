@@ -25,7 +25,7 @@ jobs:
           POSTGRES_USER: ${{ env.CI_DB_USER }}
           POSTGRES_PASSWORD: ${{ env.CI_DB_PASSWORD }}
         ports:
-          -5432:5432
+          - 5432:5432
         options:
           --health-cmd pg_isready
           --healh-interval 5s
