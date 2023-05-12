@@ -8,3 +8,5 @@ router.register('products', ProductViewSet)
 router.register('stocks', StockViewSet)
 
 urlpatterns = [path('', Hello.as_view())]+router.urls
+
+# SDF
