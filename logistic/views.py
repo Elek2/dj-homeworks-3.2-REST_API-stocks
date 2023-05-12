@@ -22,8 +22,8 @@ class StockViewSet(ModelViewSet):
     search_fields = ['products__id', 'products__title', 'products__description']
     # при необходимости добавьте параметры фильтрации
 
+
 class Hello(APIView):
-    def get (self,request):
+
+    def get(self, request):
         return Response('Hello')
-
-

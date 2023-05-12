@@ -1,0 +1,67 @@
+name: Django Testing and Deployment
+
+on:
+  push:
+    branches: [CI]
+
+jobs:
+  testing:
+    runs: ubuntu-20.04
+    env:
+      CI_SECRET_KEY: ${{ secrets.GIT_SECRET_KEY }}
+      CI_ALLOWED_HOSTS: ${{ secrets.GIT_ALLOWED_HOSTS }}
+      CI_DEBUG: True
+      CI_DB_ENGINE: ${{ secrets.GIT_DB_ENGINE }}
+      CI_DB_NAME: ${{ secrets.GIT_DB_NAME }}
+      CI_DB_USER: ${{ secrets.GIT_DB_USER }}
+      CI_DB_PASSWORD: ${{ secrets.GIT_DB_PASSWORD }}
+      CI_DB_HOST: ${{ secrets.GIT_DB_HOST }}
+      CI_DB_PORT: ${{ secrets.GIT_DB_PORT }}
+    services:
+      postgres_main:
+        image: postgres:12
+        env:
+          POSTGRES_DB: ${{ env.CI_DB_NAME }}
+          POSTGRES_USER: ${{ env.CI_DB_USER }}
+          POSTGRES_PASSWORD: ${{ env.CI_DB_PASSWORD }}
+        ports:
+          5432:5432
+        options:
+          --health-cmd pg_isready
+          --healh-interval 5s
+          --healh-timeout 5s
+          --healh-retries 5
+
+    steps:
+      - name: Проверяем репозиторий на наличие изменений
+        uses: actions/checkout@v3
+
+      - name: Установка python и окружения
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.11
+
+      - name: Установка зависимостей
+        run: pip install -r requirements.txt
+
+      - name: Линтинг
+        run: flake8 logistic/ --exclude logistic/migrations --max-line-length 119
+
+      - name: Тестрование
+        run: python manage.py test
+        env:
+          ENV_SECRET_KEY: ${{ env.CI_SECRET_KEY }}
+          ENV_ALLOWED_HOSTS: ${{ env.CI_ALLOWED_HOSTS }}
+          ENV_DEBUG: ${{ env.CI_DEBUG }}
+          ENV_DB_ENGINE: ${{ env.CI_DB_ENGINE }}
+          ENV_DB_NAME: ${{ env.CI_DB_NAME }}
+          ENV_DB_USER: ${{ env.CI_DB_USER }}
+          ENV_DB_PASSWORD: ${{ env.CI_DB_PASSWORD }}
+          ENV_DB_HOST: ${{ env.CI_DB_HOST }}
+          ENV_DB_PORT: ${{ env.CI_DB_PORT }}
+#
+#      - name: Деплой
+#        run: python manage.py test
+#        env:
+#          ENV_SECRET_KEY: ${{ env.CI_SECRET_KEY }}
+#          ENV_ALLOWED_HOSTS: ${{ env.CI_ALLOWED_HOSTS }}
