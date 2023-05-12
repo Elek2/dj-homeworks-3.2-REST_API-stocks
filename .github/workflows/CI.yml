@@ -28,9 +28,9 @@ jobs:
           - 5432:5432
         options:
           --health-cmd pg_isready
-          --healh-interval 5s
-          --healh-timeout 5s
-          --healh-retries 5
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Проверяем репозиторий на наличие изменений
