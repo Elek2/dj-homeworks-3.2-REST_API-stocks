@@ -60,8 +60,11 @@ jobs:
           ENV_DB_HOST: ${{ env.CI_DB_HOST }}
           ENV_DB_PORT: ${{ env.CI_DB_PORT }}
 #
-#      - name: Деплой
-#        run: python manage.py test
-#        env:
-#          ENV_SECRET_KEY: ${{ env.CI_SECRET_KEY }}
-#          ENV_ALLOWED_HOSTS: ${{ env.CI_ALLOWED_HOSTS }}
+      - name: Деплой
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.GIT_SSH_HOST }}
+          username: ${{ secrets.GIT_SSH_USER }}
+          port: ${{ secrets.GIT_SSH_PORT }}
+          password: ${{ secrets.GIT_SSH_PASSWORD }}
+          script: expect /home/eleklek/dj-stocks/pull.exp
