@@ -26,4 +26,4 @@ class StockViewSet(ModelViewSet):
 class Hello(APIView):
 
     def get(self, request):
-        return Response('Hello')
+        return Response('Hello World')
