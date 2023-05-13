@@ -8,4 +8,4 @@ class FirstTestCase(TestCase):
         client = APIClient()
         url = '/api/v1/'
         response = client.get(url)
-        self.assertEqual(response.data, 'Hello World')
+        self.assertEqual(response.data, 'Hello World!!!')
